@@ -3,12 +3,12 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 const TOKEN = process.env.TOKEN;
 var schedule = require('node-schedule');
+var isOdd = true;
 
 bot.login(TOKEN);
 
 bot.on('ready', () => {
   console.info(`Logged in as ${bot.user.tag}!`);
-  var months
   raidScheduler();
 });
 
@@ -46,8 +46,18 @@ function raidScheduler() {
     console.log('Friday');
   });
 
-  // monday cron
-  var m = schedule.scheduleJob('0 13 * * 1 [ `expr \`date +\%s\` / 86400 \% 2` -eq 1 ] &&', function(){
-    console.log('Monday');
+  // monday cron every other monday
+  var moncron = new schedule.RecurrenceRule();
+  wedcron.dayOfWeek = 1;
+  wedcron.hour = 13;
+  wedcron.minute = 0;
+  var w = schedule.scheduleJob(wedcron, function(){
+    isOdd = !isOdd;
+    if (isOdd){
+      console.log('Monday');
+    }
+    else {
+      console.log('Monday no raid');
+    }
   });
 }
